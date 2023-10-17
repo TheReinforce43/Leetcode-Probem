@@ -1,0 +1,41 @@
+class Solution {
+public:
+    bool vis[100][100];
+    vector<pair<int,int>> direc={{1,0},{-1,0},{0,1},{0,-1}};
+
+    bool isValid(int i,int j,int n,int m)
+    {
+        return( (i>=0&&i<n) && (j>=0 && j<m ));
+    }
+
+    void DFS(vector<vector<int>>& image, int sr, int sc, int color,int org_clr,int n,int m)
+    {
+        vis[sr][sc]=true;
+        if(image[sr][sc]==org_clr)
+        {
+            image[sr][sc]=color;
+        } 
+        for(pair<int,int> d:direc)
+        {
+            int ni=d.first + sr;
+            int nj=d.second+sc;
+            if(isValid(ni,nj,n,m)==false) continue;
+            if(vis[ni][nj]) continue;
+            if(image[ni][nj]!=org_clr) continue;
+            DFS( image, ni, nj,  color, org_clr, n, m);
+
+        }
+
+    }
+
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int color) {
+
+        int n=image.size();
+        int m=image[0].size();
+        int org_clr=image[sr][sc];
+        DFS(image,sr,sc,color,org_clr,n,m);
+
+        return image;
+        
+    }
+};
